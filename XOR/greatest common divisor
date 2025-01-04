@@ -1,0 +1,22 @@
+The Greatest Common Divisor (GCD) is the largest number that divides exactly two integers aa and bb.
+
+    For example, for a=12a=12 and b=8b=8, the GCD is 4, because 4 is the largest common divisor.
+    If two numbers are coprime (meaning their only common divisor is 1), their GCD is 1.
+    The GCD can be calculated using Euclid's algorithm, which uses successive divisions.
+
+Uses:
+
+    Simplifying fractions: Divide the numerator and denominator by their GCD.
+    Cryptography and number theory: The GCD is important in many mathematical and security applications.
+
+In summary, the GCD of two numbers is the largest common divisor of those numbers.
+
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+# Example usage:
+gcd_result = gcd(66528, 52920)
+print(gcd_result)
