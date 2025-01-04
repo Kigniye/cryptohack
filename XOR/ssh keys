@@ -1,0 +1,19 @@
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+
+# Define the file path for the uploaded SSH public key file
+file_path = '/mnt/data/bruce_rsa_6e7ecd53b443a97013397b1a1ea30e14.pub'
+
+# Load and parse the SSH public key file
+with open(file_path, 'rb') as pub_key_file:
+    public_key_data = pub_key_file.read()
+
+# Parse the key using the cryptography library
+public_key = serialization.load_ssh_public_key(public_key_data)
+
+# Extract the modulus n
+if isinstance(public_key, rsa.RSAPublicKey):
+    modulus_n = public_key.public_numbers().n
+    print(modulus_n)
+else:
+    print("The provided key is not an RSA public key.")
