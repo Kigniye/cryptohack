@@ -1,0 +1,75 @@
+Understanding the Extended Euclidean Algorithm
+1. Initial Problem
+We want to solve the equation:
+
+    a ⋅ u + b ⋅ v = gcd(a, b)
+
+The goal is to find:
+1. The GCD (gcd(a, b)).
+2. The coefficients u and v that satisfy the equation.
+2. Inspiration from Euclid’s Algorithm
+The classic Euclidean algorithm calculates the GCD iteratively as:
+
+    gcd(a, b) = gcd(b, a % b)
+
+This process repeats until b = 0.
+
+At that point:
+
+    gcd(a, b) = a    when b = 0.
+3. Extending Euclid: Adding Coefficients
+To extend the algorithm, we need to track the coefficients u and v at each step. This works recursively.
+
+If we know:
+
+    b ⋅ u1 + (a % b) ⋅ v1 = gcd(b, a % b),
+
+and rewrite a % b = a - ⌊a / b⌋ ⋅ b, we get:
+
+    a ⋅ v1 + b ⋅ (u1 - ⌊a / b⌋ ⋅ v1) = gcd(a, b).
+
+This gives the updated coefficients:
+- u = v1,
+- v = u1 - ⌊a / b⌋ ⋅ v1.
+4. Creating the Code
+The code implements the algorithm step-by-step.
+(a) Base Case
+If b = 0, we know:
+
+    gcd(a, 0) = a,    u = 1,    v = 0.
+
+This is implemented as:
+
+    if b == 0:
+        return a, 1, 0
+(b) Recursive Step
+Otherwise, we call the function on b and a % b to get the GCD and coefficients u1 and v1:
+
+    gcd, u1, v1 = extended_gcd(b, a % b)
+
+Then, we update u and v using the derived formulas:
+
+    u = v1
+    v = u1 - (a // b) * v1
+
+Finally, return the results:
+
+    gcd, u, v
+5. Complete Code
+def extended_gcd(a, b):
+    if b == 0:  # Base case
+        return a, 1, 0
+    gcd, u, v = extended_gcd(b, a % b)  # Recursive step
+    return gcd, v, u - (a // b) * v  # Update coefficients
+
+
+def extended_gcd(a, b):
+    if b == 0:
+        return a, 1, 0
+    gcd, u, v = extended_gcd(b, a % b)
+    return gcd, v, u - (a // b) * v
+
+p = 26513
+q = 32321
+
+print("FLAG =", min(extended_gcd(p, q)))
