@@ -1,0 +1,38 @@
+# Define the state matrix (4x4) representing the current state of the data
+state = [
+    [206, 243, 61, 34],
+    [171, 11, 93, 31],
+    [16, 200, 91, 108],
+    [150, 3, 194, 51],
+]
+
+# Define the round key matrix (4x4) used for the AddRoundKey operation
+round_key = [
+    [173, 129, 68, 82],
+    [223, 100, 38, 109],
+    [32, 189, 53, 8],
+    [253, 48, 187, 78],
+]
+
+# Function to perform the AddRoundKey operation
+# This XORs each element of the state matrix with the corresponding element of the round key matrix
+def add_round_key(s, k):
+    out = []  # Initialize an empty list to store the output
+    for i in range(len(s)):  # Loop over the rows of the state matrix
+        for j in range(len(s[i])):  # Loop over the columns of the state matrix
+            # XOR the elements of the state matrix and round key matrix
+            out.append(s[i][j] ^ k[i][j])
+    return out  # Return the resulting list after the XOR operation
+
+# Function to convert a matrix of integers into a readable string of bytes
+def matrix2bytes(matrix):
+    out = []  # Initialize an empty list to store the output bytes
+    for r in matrix:  # Loop over each row in the matrix
+        # Convert each integer to a 2-byte representation and decode it as a string
+        out.append(r.to_bytes(2, byteorder='little').decode())
+    # Join all decoded strings and return the final result
+    return ''.join(out)
+
+# Perform the AddRoundKey operation on the state and round key matrices
+# Then convert the resulting matrix into a string using matrix2bytes and print it
+print(matrix2bytes(add_round_key(state, round_key)))
