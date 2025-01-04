@@ -1,0 +1,9 @@
+11 ≡ x mod 6 means that we are looking for the remainder when 11 is divided by 6. This remainder is what we call 
+𝑥
+8146798528947 ≡ y mod 17 means that we are looking for the remainder when 11 is divided by 17. This remainder is what we call 
+y
+And we mus find the smaller of the two integers, (x,y) you obtained after reducing by the modulus.z
+x = 11 % 6
+y = 8146798528947 % 17
+
+print("FLAG =", min(x, y))
