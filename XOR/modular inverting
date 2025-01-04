@@ -1,0 +1,42 @@
+To find the multiplicative inverse of an element gg in a finite field FpFp​, we are looking for an integer dd such that:
+g⋅d≡1mod  p
+g⋅d≡1modp
+
+This means that when we multiply gg by dd, the result is congruent to 1 modulo pp.
+
+In your example, the problem is to find the inverse of 33 modulo 1313, i.e., the integer dd such that:
+3⋅d≡1mod  13
+3⋅d≡1mod13
+Step-by-step approach:
+
+    Fermat's Little Theorem: According to Fermat's Little Theorem, for any integer gg that is not divisible by pp, we have:
+    gp−1≡1mod  p
+    gp−1≡1modp
+
+    So for g=3g=3 and p=13p=13, Fermat’s Little Theorem tells us that:
+    312≡1mod  13
+    312≡1mod13
+
+    This means that 311311 will be the multiplicative inverse of 33 modulo 1313 (since 3⋅311≡1mod  133⋅311≡1mod13).
+
+    Finding the inverse: We need to compute 311mod  13311mod13 to find the inverse.
+
+    Calculate 311mod  13311mod13: To compute 311mod  13311mod13, we can use modular exponentiation, which is a more efficient way of calculating powers modulo some number.
+
+    Let's calculate powers of 3 modulo 13:
+        31≡3mod  1331≡3mod13
+        32=3⋅3=9mod  1332=3⋅3=9mod13
+        33=3⋅9=27≡1mod  1333=3⋅9=27≡1mod13
+
+    Notice that 33≡1mod  1333≡1mod13, so:
+        311=33×3+2=(33)3⋅32≡13⋅9=9mod  13311=33×3+2=(33)3⋅32≡13⋅9=9mod13
+
+    Therefore, 311≡9mod  13311≡9mod13.
+
+Conclusion:
+
+The multiplicative inverse of 33 modulo 1313 is d=9d=9, because:
+3⋅9=27≡1mod  13
+3⋅9=27≡1mod13
+
+Thus, d=9d=9 is the solution.
