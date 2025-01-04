@@ -1,0 +1,48 @@
+The PEM file you uploaded contains an RSA key encoded in base64, surrounded by headers like this:
+
+-----BEGIN RSA PRIVATE KEY-----
+(base64 content)
+-----END RSA PRIVATE KEY-----
+
+I read the file into Python.
+
+Use PyCryptodome
+I used a Python library called PyCryptodome, which can handle RSA keys and other cryptographic data.
+I imported the library using:
+
+from Crypto.PublicKey import RSA
+
+Then, I used RSA.import_key() to load the RSA key from the PEM file.
+
+Extract the RSA key components
+After loading the key, I accessed its internal values, like:
+
+    n: the modulus
+    e: the public exponent
+    d: the private exponent
+
+To get dd, I used:
+
+private_exponent_d = rsa_key.d
+
+Display dd
+The value of dd (the private key) is what I shared with you earlier. It’s a very large number.
+
+***********************************************************************************
+from Crypto.PublicKey import RSA
+
+# Define the file path for the uploaded PEM file
+file_path = '/mnt/data/privacy_enhanced_mail_1f696c053d76a78c2c531bb013a92d4a.pem'
+
+# Load and parse the PEM file
+with open(file_path, 'r') as pem_file:
+    pem_data = pem_file.read()
+
+# Extract the RSA private key
+rsa_key = RSA.import_key(pem_data)
+
+# Extract the private key components
+private_exponent_d = rsa_key.d
+
+# Print the private exponent d
+print(private_exponent_d)
