@@ -1,0 +1,9 @@
+import math
+
+# Define the vector
+v = (4, 6, 2, 5)
+
+# Calculate the size (norm) of the vector
+size = math.sqrt(sum(x**2 for x in v))
+
+print(size)
