@@ -1,0 +1,82 @@
+Elliptic Curve Equation: The elliptic curve is given by:
+E:Y2=X3+497X+1768 (mod 9739)
+E:Y2=X3+497X+1768 (mod 9739)
+
+Generator Point GG: The generator point is G=(1804,5368)G=(1804,5368).
+
+Alice's Public Key QAQA​: Alice sends you her public key:
+QA=(815,3190)
+QA​=(815,3190)
+
+Your Secret Integer nBnB​: You have the secret integer nB=1829nB​=1829.
+
+Calculate the Shared Secret: You will compute the scalar multiplication of your secret integer nBnB​ with Alice’s public key QAQA​, which gives you the shared secret:
+S=[nB]QA
+S=[nB​]QA​
+
+Scalar multiplication on an elliptic curve is the operation of multiplying a point by a scalar (integer), using the point addition rules.
+
+Generate the Shared Secret Key: The shared secret will have an xx-coordinate. To generate the key, you take the integer representation of the xx-coordinate and then cast it to a string. Finally, you hash it using SHA1 and extract the hex digest as the flag.
+
+
+****************************************************************************************
+import hashlib
+
+# Function to calculate modular inverse
+def mod_inverse(a, p):
+    return pow(a, p-2, p)
+
+# Function to add two points on the elliptic curve
+def point_addition(P, Q, a, p):
+    x1, y1 = P
+    x2, y2 = Q
+
+    if P == (0, 0):  # Point at infinity
+        return Q
+    if Q == (0, 0):  # Point at infinity
+        return P
+
+    if x1 == x2 and y1 == -y2 % p:  # P + (-P) = O
+        return (0, 0)
+
+    if P == Q:  # Point doubling
+        lam = (3 * x1**2 + a) * mod_inverse(2 * y1, p) % p
+    else:  # Point addition
+        lam = (y2 - y1) * mod_inverse(x2 - x1, p) % p
+
+    x3 = (lam**2 - x1 - x2) % p
+    y3 = (lam * (x1 - x3) - y1) % p
+
+    return (x3, y3)
+
+# Function to multiply a point by a scalar (nB * Q_A)
+def scalar_multiply(n, P, a, p):
+    result = (0, 0)  # Identity element (point at infinity)
+    addend = P
+
+    while n > 0:
+        if n % 2 == 1:
+            result = point_addition(result, addend, a, p)
+        addend = point_addition(addend, addend, a, p)  # Point doubling
+        n //= 2
+
+    return result
+
+# Given values
+a = 497
+p = 9739
+Q_A = (815, 3190)
+n_B = 1829
+
+# Calculate the shared secret S = nB * Q_A
+S = scalar_multiply(n_B, Q_A, a, p)
+
+# Extract the x-coordinate of the shared point
+x_S, y_S = S
+
+# Generate the shared secret by hashing the x-coordinate
+shared_secret = str(x_S)
+sha1_hash = hashlib.sha1(shared_secret.encode()).hexdigest()
+
+# Output the result
+print(f"Shared secret: {sha1_hash}")
