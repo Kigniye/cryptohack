@@ -1,0 +1,13 @@
+The hash value is an 11-bit binary string, giving n=211=2048n=211=2048 possible hashes.
+
+The probability p(k)p(k) of no collision among kk secrets is p(k)=(n−1)k/nkp(k)=(n−1)k/nk, or equivalently p(k)=(1−1/n)kp(k)=(1−1/n)k. The probability of at least one collision is 1−p(k)1−p(k). We want 1−p(k)>0.51−p(k)>0.5.
+
+****************************************************************
+n = 1 << 11  # 2^11 = 2048
+P = 1
+for i in range(1, n):
+    P = pow((1 - 1/n), i)
+    nP = 1 - P
+    if nP > 0.5:
+        print(i)
+        break
