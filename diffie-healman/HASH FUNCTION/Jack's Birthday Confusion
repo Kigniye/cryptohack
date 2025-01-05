@@ -1,0 +1,14 @@
+Jack’s Birthday Confusion
+
+Similarly to the previous problem, n=211n=211.
+Let pp represent the probability that at least two secrets share the same hash in a given kk secrets. Then !p(k)!p(k) (the complement) represents the probability that all kk secrets have distinct hashes.
+
+The script calculates the smallest kk such that p>0.75p>0.75:
+*************************************************************************************************
+from math import factorial
+n = 2048
+for i in range(n):
+    probability = 1 - factorial(n) / (factorial(n - i) * pow(n, i))
+    if probability > 0.75:
+        print(i)
+        break
