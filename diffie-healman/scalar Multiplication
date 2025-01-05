@@ -1,0 +1,73 @@
+
+Modular Inverse: The mod_inverse function calculates the modular inverse of a number aa modulo pp. This is used to handle division in point addition.
+
+Point Addition: The point_addition function takes two points PP and QQ, and adds them together on the elliptic curve E:Y2=X3+497X+1768mod  9739E:Y2=X3+497X+1768mod9739. It follows the rules for adding points as given in the challenge.
+
+Calculate SS: The calculate_S function calculates S=P+P+Q+RS=P+P+Q+R by performing the point addition steps in sequence.
+
+Verification: After calculating SS, we check if it lies on the elliptic curve by substituting its coordinates into the curve's equation. If the equation is true, then SS is on the curve.
+**************************************************************************************************
+
+# Defining functions for adding points on the elliptic curve
+
+# Function to calculate modular inverse
+def mod_inverse(a, p):
+    return pow(a, p-2, p)
+
+# Function to add two points on the elliptic curve
+def point_addition(P, Q, a, p):
+    x1, y1 = P
+    x2, y2 = Q
+
+    if P == (0, 0):  # Case where P is infinity
+        return Q
+    if Q == (0, 0):  # Case where Q is infinity
+        return P
+
+    if x1 == x2 and y1 == -y2 % p:  # Case where P + (-P) = O (point at infinity)
+        return (0, 0)
+
+    if P == Q:  # Case where we are adding the same point
+        lam = (3 * x1**2 + a) * mod_inverse(2 * y1, p) % p
+    else:  # Case where we are adding two different points
+        lam = (y2 - y1) * mod_inverse(x2 - x1, p) % p
+
+    x3 = (lam**2 - x1 - x2) % p
+    y3 = (lam * (x1 - x3) - y1) % p
+
+    return (x3, y3)
+
+# Function to calculate P + P + Q + R
+def calculate_S(P, Q, R, a, p):
+    # Calculate P + P
+    P_plus_P = point_addition(P, P, a, p)
+    
+    # Calculate P + P + Q
+    P_plus_P_plus_Q = point_addition(P_plus_P, Q, a, p)
+    
+    # Calculate P + P + Q + R
+    S = point_addition(P_plus_P_plus_Q, R, a, p)
+    
+    return S
+
+# Parameters of the elliptic curve
+a = 497
+p = 9739
+
+# Given points
+P = (493, 5564)
+Q = (1539, 4742)
+R = (4403, 5202)
+
+# Calculate S = P + P + Q + R
+S = calculate_S(P, Q, R, a, p)
+
+# Print the result
+print("The point S (x, y) is:", S)
+
+# Check if S is on the curve
+x_S, y_S = S
+if (y_S**2 % p) == (x_S**3 + a * x_S + 1768) % p:
+    print("The point S is on the elliptic curve.")
+else:
+    print("The point S is not on the elliptic curve.")
