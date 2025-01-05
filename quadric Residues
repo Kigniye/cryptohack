@@ -1,0 +1,47 @@
+In modular arithmetic, when we talk about finding the square root modulo an integer pp, we're essentially trying to find an integer aa such that a2≡xmod  pa2≡xmodp for some integer xx. However, not every integer has a square root in modular arithmetic.
+Steps to solve the problem:
+
+    Quadratic Residue:
+        A number xx is called a quadratic residue modulo pp if there exists an integer aa such that a2≡xmod  pa2≡xmodp. If no such aa exists, xx is a quadratic non-residue.
+
+    Square Root Modulo pp:
+        We need to find a solution to the equation a2≡xmod  pa2≡xmodp for x∈{14,6,11}x∈{14,6,11} where p=29p=29. We also know that if xx is a quadratic residue, it will have exactly two square roots, aa and −a−a, modulo pp.
+
+    Method:
+        To find whether xx has a square root, we check each integer aa from 1 to p−1p−1 and compute a2mod  pa2modp. If a2≡xmod  pa2≡xmodp, then aa is a square root of xx modulo pp.
+
+    Quadratic Residue and Non-Residue:
+        In the given case, we need to check for each number in the list ints=[14,6,11]ints=[14,6,11] whether it is a quadratic residue modulo 29. If it is, find the square root.
+
+***********************************************************************************
+# Initialization of the constant p, a prime number
+p = 29  
+
+# List of integers for which we are searching for quadratic solutions modulo p
+ints = [14, 6, 11]
+
+# Initial high value for x, used to find the smallest solution
+x = 2024  
+
+# Iterate through each element n in the list ints
+for n in ints:
+    # Iterate through integers a from 1 to 28 (strictly less than p)
+    for a in range(1, p):
+        # Check if a^2 mod p equals n
+        if pow(a, 2, p) == n:
+            # If the condition is satisfied, update x with the smallest value between x and a
+            x = min(x, a)
+
+# Print the smallest value of a found for one of the n in ints
+print(x)
+
+
+********************************************************************************************
+p = 29
+ints = [14, 6, 11]
+flag = 2024 # max
+for n in ints:
+    for a in range(1,29):
+        if pow(a,2,p) == n:
+            flag = min(flag,a)
+print(flag)
