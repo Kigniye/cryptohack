@@ -1,0 +1,93 @@
+Gaussian Reduction
+
+If you look closely, "lattice" begins to appear in every corner of cryptography. Sometimes they manipulate an encryption system, destroying unsafe parameters. The most famous example is Coppersmith's attack on RSA encryption.
+
+Lattices can also be used to build encryption protocols based on two basic "hard" issues:
+
+    The Shortest Vector Problem (SVP)
+
+Given the base vector and the lattice, find the lattice L L The shortest non-zero vector of length in L. In other words, find a non-zero vector v ∈ L v\in L v < L causes ∣ ∣ v ∣ ∣ ||v|| Minimum v_
+
+    The Closest Vector Problem (CVP)
+
+Given a base vector, a lattice, and a target vector that is not on the lattice, find the closest lattice vector to the target vector.
+
+Given an absence L L Vectors in L w ∈ R m w\in R^m w< Rm, find vector v ∈ L v\in L v < L causes ∣ ∣ v − w ∣ ∣ ||v-w|| _v_w_minimum
+
+For general lattices, the SVP problem is very difficult, but for relatively simple cases, we have very effective algorithms to compute the solution or approximate solution of the problem. When the dimension of a lattice is less than or equal to 4, the deterministic solution can be calculated in polynomial time. For higher dimensions, only the approximate solution can be obtained.
+
+Gauss invented an algorithm to find a two-dimensional lattice with a given base L L The best base for L. The output v1 of the algorithm is L L The shortest non-zero vector in L solves the two-dimensional SVP problem.
+
+The Gauss algorithm achieves its goal roughly by subtracting a multiple of one base vector from another until it is no longer possible to make them smaller. This applies to two dimensions and is therefore a good visualization.
+
+I am tired of translating one sentence to another. I don't want to tap any more formulas. Let's just draw a picture.
+
+The script doesn't want to be written either
+
+Direct interactive command line
+
+    import numpy as np
+    ar = np.array
+    v = ar([846835985, 9834798552],dtype='i8')
+    u = ar([87502093, 123094980],dtype='i8')
+    v1,v2 = u,v
+
+    >>> if siz2(v2) < siz2(v1):
+    	print('swap')
+    	v1,v2 = v2,v1
+
+    >>> m = int(v1.dot(v2)/v1.dot(v1));m
+    56
+    >>> v2 = v2 - m*v1;v2
+    array([-4053281223,  2941479672], dtype=int64)
+    >>> if siz2(v2) < siz2(v1):
+    	print('swap')
+    	v1,v2 = v2,v1
+    	
+    >>> m = int(v1.dot(v2)/v1.dot(v1));m
+    0
+    >>> v1
+    array([ 87502093, 123094980], dtype=int64)
+    >>> v2
+    array([-4053281223,  2941479672], dtype=int64)
+    >>> v1.dot(v2)
+    ***********************************************************************************
+
+    # Define the helper function to compute the squared norm of a vector
+def squared_norm(vector):
+    return vector[0]**2 + vector[1]**2
+
+# Define the Gaussian Reduction algorithm
+def gaussian_reduction(v1, v2):
+    while True:
+        # Ensure v1 is the shorter vector
+        if squared_norm(v2) < squared_norm(v1):
+            print("Swapping vectors...")
+            v1, v2 = v2, v1
+        
+        # Compute the projection multiplier
+        m = int((v1[0] * v2[0] + v1[1] * v2[1]) / squared_norm(v1))
+        print(f"Projection multiplier: {m}")
+        
+        # Reduce v2 by subtracting m * v1
+        v2 = [v2[0] - m * v1[0], v2[1] - m * v1[1]]
+        print(f"Updated v2: {v2}")
+        
+        # Check if further reduction is possible
+        if squared_norm(v2) >= squared_norm(v1):
+            break
+
+    return v1, v2
+
+# Define the input lattice vectors
+v1 = [87502093, 123094980]
+v2 = [846835985, 9834798552]
+
+# Perform Gaussian Reduction
+v1_reduced, v2_reduced = gaussian_reduction(v1, v2)
+
+# Output the results
+print("Reduced basis vectors:")
+print("v1:", v1_reduced)
+print("v2:", v2_reduced)
+print("Dot product of reduced vectors:", v1_reduced[0] * v2_reduced[0] + v1_reduced[1] * v2_reduced[1])
