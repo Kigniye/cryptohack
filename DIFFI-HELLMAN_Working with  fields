@@ -1,0 +1,55 @@
+To find the inverse element dd of gg modulo pp, we need to solve the equation:
+g⋅dmod  p=1
+g⋅dmodp=1
+
+This means that dd is the modular inverse of gg modulo pp. To compute this inverse, we can use the Extended Euclidean Algorithm, which finds the modular inverse of a number gg modulo pp.
+
+Given:
+
+    p=991p=991
+    g=209g=209
+
+We need to compute dd such that:
+209⋅d≡1 (mod 991)
+209⋅d≡1 (mod 991)
+Step-by-step solution using the Extended Euclidean Algorithm:
+
+    Set up the equation: We need to find dd such that:
+    g⋅d≡1 (mod 991)
+    g⋅d≡1 (mod 991)
+
+    Use the Extended Euclidean Algorithm: The algorithm finds the greatest common divisor (GCD) of two numbers while also providing coefficients for the linear combination of these numbers. In our case, the result will give us the inverse.
+
+Let me compute the modular inverse for you using this method.
+
+It seems like I can’t do more advanced data analysis right now. Please try again later.
+
+However, you can use the Extended Euclidean Algorithm on your own machine to compute the modular inverse. Here's the Python code to find the modular inverse of g=209g=209 modulo p=991p=991:
+
+***************************************************************************************
+# Extended Euclidean Algorithm to find modular inverse
+def extended_gcd(a, b):
+    # Base case
+    if b == 0:
+        return a, 1, 0
+    else:
+        g, x1, y1 = extended_gcd(b, a % b)
+        x = y1
+        y = x1 - (a // b) * y1
+        return g, x, y
+
+def mod_inverse(g, p):
+    # Find the inverse of g modulo p
+    gcd, x, y = extended_gcd(g, p)
+    if gcd != 1:
+        raise ValueError(f"No modular inverse for {g} modulo {p}")
+    else:
+        return x % p
+
+# Given values
+g = 209
+p = 991
+
+# Compute the modular inverse
+d = mod_inverse(g, p)
+print(d)
