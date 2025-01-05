@@ -1,0 +1,34 @@
+The code tries to find the smallest generator (or primitive element) of a finite field Fp∗Fp∗​, where p=28151p=28151.
+
+    Generator Concept: A generator is an element in a group that can generate all other elements of the group through its powers. For the finite field Fp∗Fp∗​, a generator kk means that knkn (mod pp) for different values of nn gives all the non-zero elements in the group.
+
+    The function is_generator(k, p):
+        This function checks if k is a generator for Fp∗Fp∗​.
+        It checks all powers of k from n=2n=2 to p−1p−1.
+        If for any nn, knmod  p=kknmodp=k, it means that kk repeats too early and is not a generator.
+        If no repetition occurs, k is a generator.
+
+    The loop over k:
+        The outer loop goes through all numbers kk from 0 to p−1p−1.
+        It checks each kk using is_generator(k, p).
+        When it finds the first generator, it prints it and stops the loop.
+
+**************************************************************************************
+
+# Function to check if k is a generator for the group F_p*
+def is_generator(k, p):
+    # Loop through all n from 2 to p-1
+    for n in range(2, p):
+        # Check if k raised to the power n is congruent to k (mod p)
+        if pow(k, n, p) == k:
+            return False  # If it repeats, k is not a generator
+    return True  # k is a generator if no repetition was found
+
+# p is the prime number for the finite field F_p
+p = 28151
+
+# Try each number k from 0 to p-1 to find the smallest generator
+for k in range(p):
+    if is_generator(k, p):  # If k is a generator
+        print(k)  # Print the smallest generator
+        break  # Stop after finding the first (smallest) generator
